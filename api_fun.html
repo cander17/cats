@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8"><title>API practice</title>
+
+	<script>
+		function loadFact() {
+			var request = new XMLHttpRequest();
+			console.log("1 - request object created");
+		    request.open("GET", "https://cat-fact.herokuapp.com/facts/random?animal_type=cat&amount=1", true);
+
+			console.log("2 - opened request file");
+
+			request.onreadystatechange = function() {
+				console.log("3 - readystatechange event fired.");
+
+				if (request.readyState == 4 && request.status == 200) {
+					console.log("5 - response received");
+					result = request.responseText;
+					data = JSON.parse(result);
+
+                    document.getElementById("FACT").innerHTML = "Fun fact: " + data["text"] + "<br><br>";
+
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+                    document.getElementById("FACT").innerHTML = "status request: " + request.status;
+
+				}
+
+				else if (request.readyState == 3) {
+					document.getElementById("FACT").innerHTML = "Too soon!  Try again";
+				}
+			}
+			request.send();
+			console.log("4 - Request sent");
+        }
+
+	</script>
+</head>
+<body onload="loadFact()">
+
+	<h1>Random Cat Fact</h1>
+    <div id="FACT">
+
+	</div>
+    <div id="Website">
+        I found this API on
+        <a href="https://github.com/public-apis/public-apis#animals" target="_blank" style="text-decoration:none">
+        Github's Public API List</a>
+    </div>
+    <div id="Options">
+        I used the ID "text" to request the content of the random cat fact.
+    </div>
+    <div id="Applications">
+        This would be a helpful tool for people who are developing animal
+		related trivia questions or just for cat lovers looking to learn more.
+    </div>
+
+</body>
+</html>
